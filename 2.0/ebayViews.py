@@ -3,43 +3,12 @@ Authon: MrYanc
 Version: 3.5
 Date: 11/20/2017
 '''
+import time
+import random
 import urllib
 from bs4 import BeautifulSoup
-import time
-import threading
-
-class View(threading.Thread):
-	"""docstring for View"""
-	def __init__(self, arg):
-		super(View, self).__init__()
-		self.arg = arg
-
-	def run(self, url, proxy):
-		view(url, proxy);
-		pass
-
-	'''
-	vist the ebay item url with proxy
-	input: url: string, proxy: string
-	output: none
-	exception: connection abortion
-	'''
-	def view(self, url, proxy):
-		# random select sleep time
-		sleep_time = random.randint(5, 10);
-		# time sleep between each request
-		request = urllib.request.Request(url, headers=header);
-
-		try:
-			request.set_proxy(proxy, 'http');
-			page = urllib.request.urlopen(item_url).read();
-			print("Success view item with proxy {}".format(proxy));
-		except Exception as e:
-			print("Failed view item with proxy {}".format(proxy));
-			print(e);
-		else:
-			pass
-
+from queue import Queue
+from threading import Thread
 
 '''
 download proxy list from proxy website: 
@@ -69,25 +38,44 @@ def proxyList():
 			ips.append(temp);
 		return ips;	
 
-def main():
+'''
+vist the ebay item url with proxy
+input: url: string, proxy: string
+output: none
+exception: connection abortion
+'''
+def view(url, queue):
+	# random select sleep time
+	sleep_time = random.randint(5, 10);
+	# time sleep between each request
+	request = urllib.request.Request(url, headers=header);
+	proxy = queue.get();
+	try:
+		request.set_proxy(proxy, 'http');
+		page = urllib.request.urlopen(url).read();
+		print("Success view item with proxy {}".format(proxy));
+	except Exception as e:
+		print("Failed view item with proxy {}".format(proxy));
+		print(e);
+	else:
+		pass
+
+def main(item):
+	print("Start adding views to item: {}.".format(item));
+
+	# get proxy list
 	ips = proxyList();
 	print("Get proxy list, length is {}.".format(len(ips)));
 
-	# ebay item url
-	item_urls = ["https://www.ebay.com/i/132346024745"]; #"https://www.ebay.com/i/132353217389"
+	# initiate working thread pool
+	queue = Queue();
+	for i in range(1,10):
+		t = Thread(target=view, args=(item, queue));
+		t.start();
 
 	# vist the ebay item with different proxy
-	for item_url in item_urls:
-		print("Add views to item: {}.".format(item_url));
-		
-		for proxy in ips:
-			try:
-				
-			except Exception as e:
-				print("Error: unable to start thread");
-				print(e)
-			
-	pass
+	for proxy in ips:
+		queue.put(proxy);
 
 if __name__ == "__main__":
 	# browser header
@@ -95,7 +83,8 @@ if __name__ == "__main__":
 	header = {};
 	header['User-Agent'] = USER_AGENT;
 
-	# thread control
-	sema = threading.Semaphore(5);
-	
-	main();
+	# ebay item url
+	item_urls = ["https://www.ebay.com/i/132346024745"]; #"https://www.ebay.com/i/132353217389"
+	# vist the ebay items
+	for item in item_urls:
+		main(item);
