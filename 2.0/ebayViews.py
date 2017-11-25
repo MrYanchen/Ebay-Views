@@ -9,6 +9,7 @@ import urllib
 from bs4 import BeautifulSoup
 from queue import Queue
 from threading import Thread
+from threading import Lock
 
 '''
 download proxy list from proxy website: 
@@ -69,7 +70,9 @@ def main(item):
 
 	# initiate working thread pool
 	queue = Queue();
-	for i in range(1,10):
+	
+	
+	for i in range(1, len(ips)):
 		t = Thread(target=view, args=(item, queue));
 		t.start();
 
