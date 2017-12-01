@@ -61,6 +61,12 @@ def view(url, queue):
 	else:
 		pass
 
+'''
+get item list
+input: file source
+output: list
+exception: file not found exception
+'''
 def getItemList():
 	# ebay item url
 	item_urls = [];
