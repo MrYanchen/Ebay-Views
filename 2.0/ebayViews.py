@@ -61,6 +61,12 @@ def view(url, queue):
 	else:
 		pass
 
+def getItemList():
+	# ebay item url
+	item_urls = [];
+
+	return item_urls;
+
 def main(item):
 	print("Start adding views to item: {}.".format(item));
 
@@ -70,7 +76,6 @@ def main(item):
 
 	# initiate working thread pool
 	queue = Queue();
-	
 	
 	for i in range(1, len(ips)):
 		t = Thread(target=view, args=(item, queue));
@@ -87,7 +92,8 @@ if __name__ == "__main__":
 	header['User-Agent'] = USER_AGENT;
 
 	# ebay item url
-	item_urls = ["https://www.ebay.com/i/132346024745"]; #"https://www.ebay.com/i/132353217389"
+	item_urls = getItemList();
+
 	# vist the ebay items
 	for item in item_urls:
 		main(item);

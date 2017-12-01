@@ -6,6 +6,7 @@ Date: 10/20/2017
 import urllib
 from bs4 import BeautifulSoup
 import time
+import os
 
 '''
 scrape proxy from proxy website
@@ -35,12 +36,17 @@ def proxyList():
 			ips.append(temp);
 		return ips;	
 
+def getItemList():
+	# ebay item url
+	item_urls = [];
+
+	return item_urls;
+
 def main():
 	ips = proxyList();
 	print(len(ips));
 
-	# ebay item url
-	item_urls = ["https://www.ebay.com/i/132346024745", "https://www.ebay.com/i/132353217389"];
+	item_urls = getItemList();
 
 	# vist the ebay item with different proxy
 	for item_url in item_urls:
