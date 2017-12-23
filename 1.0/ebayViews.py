@@ -7,6 +7,7 @@ import urllib
 from bs4 import BeautifulSoup
 import time
 import os
+import sys
 
 '''
 scrape proxy from proxy website
@@ -42,7 +43,9 @@ input: file source
 output: list
 exception: file not found exception
 '''
-def getItemList():
+def getItemList(file):
+	# read txt file
+
 	# ebay item url
 	item_urls = [];
 

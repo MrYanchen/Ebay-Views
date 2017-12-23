@@ -6,6 +6,7 @@ Date: 11/20/2017
 import time
 import random
 import urllib
+import sys
 from bs4 import BeautifulSoup
 from queue import Queue
 from threading import Thread
@@ -67,10 +68,13 @@ input: file source
 output: list
 exception: file not found exception
 '''
-def getItemList():
+def getItemList(filename):
 	# ebay item url
 	item_urls = [];
-
+	with open(filename) as f:
+		lines = f.readlines();
+		for line in lines:
+			item_urls.append(line);
 	return item_urls;
 
 def main(item):
@@ -97,8 +101,9 @@ if __name__ == "__main__":
 	header = {};
 	header['User-Agent'] = USER_AGENT;
 
+	directory = sys.argv[1];
 	# ebay item url
-	item_urls = getItemList();
+	item_urls = getItemList(directory);
 
 	# vist the ebay items
 	for item in item_urls:
