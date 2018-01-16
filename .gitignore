@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# text file
+# txt extensions
 *.txt
 
 # C extensions
